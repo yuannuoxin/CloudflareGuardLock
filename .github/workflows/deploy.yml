@@ -56,7 +56,7 @@ jobs:
       - name: 部署到 Cloudflare Pages
         run: |
           cd deployment
-          wrangler pages deploy --project-name="${{ inputs.cf_project_name }}" --branch=${{ inputs.project_branch }}
+          wrangler pages deploy . --project-name="${{ inputs.cf_project_name }}" --branch=${{ inputs.project_branch }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ inputs.cf_account_id }}
           CLOUDFLARE_API_TOKEN: ${{ inputs.cf_api_token }}
