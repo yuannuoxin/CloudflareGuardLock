@@ -63,10 +63,11 @@ jobs:
           echo "部署目录内容:"
           ls -la
           
-          # 尝试部署到现有项目，如果失败则创建新项目
-          if ! wrangler pages deploy . --project-name="${{ inputs.cf_project_name }}" --branch=${{ inputs.project_branch }}; then
+          # 尝试部署到现有项目，如果失败则使用项目名称创建新项目
+          if ! wrangler pages deploy . --project-name="${{ inputs.cf_project_name }}" --branch=${{ inputs.project_branch }} 2>/tmp/error.log; then
             echo "项目不存在，正在创建新项目..."
-            wrangler pages deploy .
+            cat /tmp/error.log
+            wrangler pages deploy . --project-name="${{ inputs.cf_project_name }}"
           fi
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ inputs.cf_account_id }}
