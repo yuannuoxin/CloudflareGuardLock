@@ -55,7 +55,13 @@ jobs:
 
       - name: 部署到 Cloudflare Pages
         run: |
+          echo "正在部署到 Cloudflare Pages..."
+          echo "项目名称: ${{ inputs.cf_project_name }}"
+          echo "账户 ID: ${{ inputs.cf_account_id }}"
+          echo "分支: ${{ inputs.project_branch }}"
           cd deployment
+          echo "部署目录内容:"
+          ls -la
           wrangler pages deploy . --project-name="${{ inputs.cf_project_name }}" --branch=${{ inputs.project_branch }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ inputs.cf_account_id }}
