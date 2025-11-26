@@ -272,8 +272,8 @@ export async function handleAuth(params) {
         else if (next) originalResponse = await next();
         else return new Response("验证通过，但未配置原逻辑", {status: 500});
 
-        const remainingMinutes = Math.ceil((dbResult.valid_until - now) / 60000);
-        return originalResponse(originalResponse, remainingMinutes);
+        // const remainingMinutes = Math.ceil((dbResult.valid_until - now) / 60000);
+        return originalResponse;
     }
 
     // 4. 处理密码提交（POST 请求，新增 Cookie 写入）
@@ -309,7 +309,7 @@ export async function handleAuth(params) {
                 const encryptedPassword = encryptCookie(CONFIG.PASSWORD, CONFIG.COOKIE_SECRET);
                 // console.log(`[CGL DEBUG] Encrypted password: ${encryptedPassword}`)
                 const cookieExpiry = new Date(expiryTime).toUTCString();
-                
+
                 // 修改Cookie设置，移除Secure标志以适应HTTP环境，或者根据实际情况动态设置
                 const isHttps = url.protocol === 'https:';
                 const cookie = `${CONFIG.COOKIE_NAME}=${encodeURIComponent(encryptedPassword)}; Path=/; Expires=${cookieExpiry}; HttpOnly; SameSite=Lax` +
